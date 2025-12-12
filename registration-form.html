@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+
+
+<body>
+    <header>
+        <h1>Registration Form</h1>
+    </header>
+    <main>
+        <form id="registrationForm" onsubmit="return validateForm()">
+            <label for="fullname">Full Name </label>
+            <input type="text" id="fullname" name="fullname" required minlength="3">
+
+            <label for="email">Email Address </label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password </label>
+            <input type="password" id="password" name="password" required minlength="8" 
+                   pattern="^(?=.*[0-9])(?=.*[\W_]).{8,}$"
+                   title="Password must be at least 8 characters and include 1 number and 1 special character">
+
+            <label for="confirmPassword">Confirm Password </label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <label>Gender *</label>
+            <div class="gender-options">
+                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" name="gender" value="Female" required> Female</label>
+                <label><input type="radio" name="gender" value="Other" required> Other</label>
+            </div>
+
+            <label for="dob">Date of Birth *</label>
+            <input type="date" id="dob" name="dob" required max="<?= eighteenYearsAgo() ?>">
+
+            <label for="country">Country *</label>
+            <select id="country" name="country" required>
+                <option value="">Select your country</option>
+                <option value="Philippines">Philippines</option>
+                <option value="USA">USA</option>
+                <option value="Canada">Canada</option>
+                <option value="UK">UK</option>
+                <option value="Other">Other</option>
+            </select>
+            <button type="submit">Register</button>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">✅ I agree to the <a href="terms.html" target="_blank" style="color: #716040;">Terms & Conditions </a></label>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>©Trias 2025 Registration Form</p>
+    </footer>
+
+    <script>  
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if(password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return false;
+            }
+
+
+            const dob = new Date(document.getElementById('dob').value);
+            const today = new Date();
+            const age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                alert('You must be at least 18 years old.');
+                return false;
+            }
+
+            return true;     
+        }
+    </script>
+</body>
+
+ <style>
+    
+        body { font-family: Arial, sans-serif; margin: 0; flex: auto; background-color: #f9f4ef; }
+        header, main {color: #020826; padding: 20px; flex: auto;}
+        main { max-width: 500px; margin: auto; flex: auto;}
+        label { display: block; margin-top: 10px; flex: auto; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; flex: auto; }
+        .gender-options { display: flex; gap: 0px; display: center;}
+        .checkbox-container { display: inline-flex; align-items: center;margin-top: 10px; }
+        button { margin-top: 20px; padding: 10px 15px; background-color: #8c7851; color: white; border: none; cursor: pointer; flex: auto; }
+        button:hover { background-color: #716040; flex: auto; }
+        footer{text-align: center;margin-top: 40px;font-size: 14px;color: gray;}
+       
+    </style>
+
+</html>
